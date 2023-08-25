@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -45,7 +44,7 @@ public class Medecin {
     @Column(length = 15, nullable = false)
     private String sexe;
 
-    @Column(length = 50, nullable = false)
+    @Column(unique = true, length = 50, nullable = false)
     private String email;
 
     @Column(length = 40, nullable = false)
