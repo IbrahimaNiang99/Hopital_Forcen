@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -66,10 +67,10 @@ public class Medecin {
     @JoinTable(name = "medecin_service",
         joinColumns = @JoinColumn(name = "medecin_id"),
         inverseJoinColumns = @JoinColumn(name = "service_id"))
-    private Set<Service> services = new HashSet<>();
+    private Set<ServiceEntity> services =  new HashSet<>();
 
 
-    @OneToMany(mappedBy="medecin")
-    private Set<Consultation> consultations;
+    @OneToMany(mappedBy="medecin", cascade = CascadeType.ALL)
+    private Set<Consultation> consultations =  new HashSet<>();
     
 }

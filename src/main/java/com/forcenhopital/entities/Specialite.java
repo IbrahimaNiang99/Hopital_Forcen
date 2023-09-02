@@ -3,12 +3,7 @@ package com.forcenhopital.entities;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +20,6 @@ public class Specialite {
     @Column(length = 40, nullable = false)
     private String nomSpecialite;
 
-    @ManyToMany(mappedBy = "specialites")
+    @ManyToMany(mappedBy = "specialites", fetch = FetchType.EAGER)
     private Set<Medecin> medecins = new HashSet<>();
 }

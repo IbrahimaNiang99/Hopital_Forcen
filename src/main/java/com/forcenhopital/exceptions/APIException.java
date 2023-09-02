@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class APIException {
-    
     String message;
     HttpStatus status;
     LocalDateTime timestamp;
