@@ -3,14 +3,19 @@ package com.forcenhopital.services;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+import com.forcenhopital.dto.ServiceDto;
 import com.forcenhopital.entities.Specialite;
 import com.forcenhopital.exceptions.EntityNotFoundException;
+import com.forcenhopital.exceptions.RequestException;
+import com.forcenhopital.mapping.ServiceMapper;
 import com.forcenhopital.repository.SpecialiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.forcenhopital.dto.MedecinDto;
 import com.forcenhopital.entities.Medecin;
@@ -21,35 +26,32 @@ import com.forcenhopital.repository.MedecinRepository;
 import com.forcenhopital.repository.ServiceRepository;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpServerErrorException;
 
 @Service
 @Transactional
 public class MedecinService {
     private final MedecinRepository medecinRepository;
     private final MedecinMapper medecinMapper;
+    private final ServiceMapper serviceMapper;
     private final ServiceRepository serviceRepository;
     private final SpecialiteRepository specialiteRepository;
     MessageSource messageSource;
 
     @Autowired
-    public MedecinService(MedecinRepository medecinRepository, MedecinMapper medecinMapper, MessageSource messageSource, ServiceRepository serviceRepository, SpecialiteRepository specialiteRepository) {
+    public MedecinService(MedecinRepository medecinRepository, MedecinMapper medecinMapper, MessageSource messageSource, ServiceRepository serviceRepository, SpecialiteRepository specialiteRepository, ServiceMapper serviceMapper) {
 
         this.medecinRepository = medecinRepository;
         this.medecinMapper = medecinMapper;
         this.messageSource = messageSource;
         this.serviceRepository = serviceRepository;
         this.specialiteRepository = specialiteRepository;
+        this.serviceMapper = serviceMapper;
     }
 
     // Récuperer la liste des medecins
     public List<MedecinDto> listeMedecin(){
-
-        List<Medecin> medecins = medecinRepository.findAll();
-        if (medecins == null || medecins.isEmpty()
-        ) {
-             throw new RuntimeException("La liste de medecins renvoyé est vide");
-        }
-            return medecins.stream()
+        return StreamSupport.stream(medecinRepository.findAll().spliterator(), false)
                 .map(medecinMapper::toMedecin)
                 .collect(Collectors.toList());
     }
@@ -57,7 +59,7 @@ public class MedecinService {
     // Verifier l'adresse email
     public void isValidEmail(MedecinDto medecinDto){
         if (!Helper.isValidEmail(medecinDto.getEmail())) {
-            throw new RuntimeException("L'adresse email que vous avez fourni n'est pas valide");
+            throw new RequestException("L'adresse email que vous avez fourni n'est pas valide");
         }
     }
 
@@ -65,10 +67,10 @@ public class MedecinService {
     public void isValidSenegalPhoneNumber(MedecinDto medecinDto){
 
         if (!Helper.isValidSenegalPhoneNumber(medecinDto.getTelPersonnel())) {
-            throw new RuntimeException("Le numéro de téléphone n'est pas celui du Sénégal");
+            throw new RequestException("Le numéro de téléphone n'est pas celui du Sénégal");
 
         }else if(!Helper.isValidSenegalPhoneNumber(medecinDto.getTelTravail())){
-            throw new RuntimeException("Le numéro de téléphone n'est pas celui du Sénégal");
+            throw new RequestException("Le numéro de téléphone n'est pas celui du Sénégal");
         }
     }
 
@@ -83,7 +85,7 @@ public class MedecinService {
             medecinDto.getLieuDeNaissance() == null || medecinDto.getLieuDeNaissance().isEmpty() 
             //|| medecinDto.getSpeci
         ) {
-            throw new RuntimeException("Veuillez renseigner tous les champs !!!");
+            throw new RequestException("Veuillez renseigner tous les champs !!!");
         }
     }
 
@@ -100,43 +102,41 @@ public class MedecinService {
         controlDeSaisie(medecinDto);
 
         try {
-
             return medecinMapper.toMedecin(medecinRepository.save(medecinMapper.fromMedecin(medecinDto)));
+
         } catch (DataIntegrityViolationException e) {
-            //
-            throw new RuntimeException("L'email ou le numéro de téléphone existe déjà !!!", e);
+            throw new RuntimeException("L'email ou le numéro de téléphone existe déjà !!!");
 
         }catch (DataAccessException e){
-            throw new RuntimeException("Erreur de connexion a la base de donnees ", e);
+            throw new RequestException("Erreur de connexion a la base de donnees ", HttpStatus.BAD_REQUEST);
 
         }catch (Exception e){
             throw new RuntimeException("Une erreur s'est produite lors de cette opération", e);
         }
+        //*/
     }
 
     // Recuperer un medecin grace à son id
-    public Medecin getMedecinById(Long id){
-            return medecinRepository.findById(id).
-                    orElseThrow(()->
-                            new EntityNotFoundException(("Il n'existe de pas de medecin avec un id = "+id)));
+    public MedecinDto getMedecinById(Long id){
+        return medecinMapper.toMedecin(medecinRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Il n'existe pas de medecin avec un id = "+id)));
     }    
 
     // Attribuer un sercice à un medecin
-    public Medecin addServiceToMedecin(Long idMedecin, Long idService){
+    public MedecinDto addServiceToMedecin(Long idMedecin, Long idService){
         Set<ServiceEntity> serviceSet = null;
 
-        Medecin medecin = medecinRepository.findById(idMedecin)
-                .orElseThrow(()->
-                        new EntityNotFoundException(("Il n'existe de pas de medecin avec un id = "+idMedecin)));
+        MedecinDto medecin = medecinMapper.toMedecin(medecinRepository.findById(idMedecin)
+                .orElseThrow( () -> new EntityNotFoundException("Il n'existe de pas de medecin avec un id = "+idMedecin)));
 
-        ServiceEntity serviceEntity = serviceRepository.findById(idService)
-                .orElseThrow(()->
-                        new EntityNotFoundException(("Il n'existe de pas de service avec un id = "+idService)));
+        ServiceDto serviceDto = serviceMapper.toService(serviceRepository.findById(idService)
+                .orElseThrow( () -> new EntityNotFoundException("Il n'existe de pas de service avec un id = "+idService)))  ;
 
         serviceSet = medecin.getServices();
-        serviceSet.add(serviceEntity);
+        serviceSet.add(serviceMapper.fromService(serviceDto));
         medecin.setServices(serviceSet);
-        return medecinRepository.save(medecin);
+        return medecinMapper.toMedecin(medecinRepository.save(medecinMapper.fromMedecin(medecin)));
+
     }
 
     // Attribuer un sercice à un medecin

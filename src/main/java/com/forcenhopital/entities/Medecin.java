@@ -69,7 +69,6 @@ public class Medecin {
         inverseJoinColumns = @JoinColumn(name = "service_id"))
     private Set<ServiceEntity> services =  new HashSet<>();
 
-
     @OneToMany(mappedBy="medecin", cascade = CascadeType.ALL)
     private Set<Consultation> consultations =  new HashSet<>();
     

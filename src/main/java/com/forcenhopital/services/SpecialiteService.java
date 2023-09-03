@@ -2,6 +2,7 @@ package com.forcenhopital.services;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import com.forcenhopital.dto.SpecialiteDto;
 import com.forcenhopital.entities.Specialite;
@@ -36,12 +37,8 @@ public class SpecialiteService {
 
     // Lister les spécialités
     public List<SpecialiteDto> listeSpecialite(){
-        List<Specialite> specialites = specialiteRepository.findAll();
-        if (specialites == null || specialites.isEmpty()) {
-            throw new RuntimeException("La liste renvoyée est vide");
-        }
 
-        return specialites.stream()
+        return StreamSupport.stream(specialiteRepository.findAll().spliterator(), false)
                             .map(specialiteMapper::toSpecialite)
                             .collect(Collectors.toList());
 

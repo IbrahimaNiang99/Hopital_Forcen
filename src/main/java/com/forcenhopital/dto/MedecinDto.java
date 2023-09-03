@@ -1,17 +1,21 @@
 package com.forcenhopital.dto;
 
+import com.forcenhopital.entities.ServiceEntity;
 import jakarta.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class MedecinDto {
     private Long idMedecin;
-
     @NotNull(message = "Veuillez entrer le prenom")
     private String prenom;
 
@@ -41,5 +45,7 @@ public class MedecinDto {
 
     @NotNull(message = "Veuillez entrer le numéro de téléphone de la personne à prevenir")
     private String telTravail;
-    
+
+    @Nullable
+    private Set<ServiceEntity> services =  new HashSet<>();
 }

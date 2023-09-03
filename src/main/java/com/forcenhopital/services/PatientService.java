@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @Transactional
@@ -45,11 +46,7 @@ public class PatientService {
 
     // Liste des patients
     public List<PatientDto> liste(){
-        List<Patient> patients = patientRepository.findAll();
-        if (patients == null || patients.isEmpty()){
-            throw new RuntimeException("La liste renvoyée est vide !!!");
-        }
-        return patients.stream()
+        return StreamSupport.stream(patientRepository.findAll().spliterator(), false)
                 .map(patientMapper::toPatient)
                 .collect(Collectors.toList());
     }
