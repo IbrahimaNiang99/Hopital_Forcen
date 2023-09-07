@@ -1,6 +1,7 @@
 package com.forcenhopital.dto;
 import java.util.Date;
 
+import com.forcenhopital.entities.Facture;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
@@ -53,6 +54,10 @@ public class HospitalisationDto {
     @Nullable
     private String motifDeces;
 
+    //@NotNull(message = "Veuillez indiquer le patient concerné")
     private PatientDto patient;
+
+    @NotNull(message = "Veuillez indiquer la facture")
+    private FactureDto facture;
 
 }

@@ -59,14 +59,9 @@ public class Hospitalisation {
     @OneToMany(mappedBy = "hospitalisation")
     private List<Traitement> traitement;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "facture_id", referencedColumnName = "idFacture")
     private Facture facture;
-
-    /*
-    * @OneToOne(mappedBy = "facture")
-    private Hospitalisation hospitalisation;
-    * */
 
     @ManyToOne
     @JoinColumn(name = "chambre_id")
