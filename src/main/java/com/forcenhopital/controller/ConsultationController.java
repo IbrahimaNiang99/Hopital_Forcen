@@ -22,10 +22,11 @@ public class ConsultationController {
         return consultationService.liste();
     }
 
-    @PostMapping("/ajout")
+    @PostMapping("/ajout/typeCons/{idTypeConsultation}/medecin/{idMedecin}")
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ConsultationDto ajout(@Valid @RequestBody ConsultationDto consultationDto){
-        return consultationService.ajout(consultationDto);
+    public ConsultationDto ajout(@Valid @RequestBody ConsultationDto consultationDto,
+                                    @PathVariable Long idTypeConsultation, @PathVariable Long idMedecin){
+        return consultationService.ajout(consultationDto, idTypeConsultation, idMedecin);
     }
 
     @GetMapping("/getById/{id}")

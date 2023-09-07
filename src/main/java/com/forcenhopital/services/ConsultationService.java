@@ -61,13 +61,12 @@ public class ConsultationService {
                 consultationDto.getDateConsultation() == null ||
                 consultationDto.getSynthese() == null ||
                 consultationDto.getSynthese().isEmpty() ||
-                consultationDto.getTypeConsultation() == null ||
                 consultationDto.getRendezVouses() == null ||
                 consultationDto.getPrescription() == null ||
-                consultationDto.getRendezVouses().getPatient() == null ||
-                consultationDto.getMedecin() == null
+                consultationDto.getRendezVouses().getPatient() == null
+
         ){
-            throw new RuntimeException("Veuiller saisir tous les champs");
+            throw new RuntimeException("Veuiller saisir tous les champs...");
         }
     }
 
@@ -79,14 +78,20 @@ public class ConsultationService {
     }
 
     // Ajouter une nouvelle consultation
-    public ConsultationDto ajout(ConsultationDto consultationDto){
+    public ConsultationDto ajout(ConsultationDto consultationDto, Long idTypeConsultation, Long idMedecin){
         /*
         * Controle de saisie
         * */
         controleDeSaisie(consultationDto);
         try {
 
-            TypeConsultationDto typeConsultation = consultationDto.getTypeConsultation();
+            //TypeConsultationDto typeConsultation = consultationDto.getTypeConsultation();
+            TypeConsultationDto typeConsultation = typeConsultationMapper.toTypeConsultation(typeConsultationRepository.findById(idTypeConsultation)
+                    .orElseThrow( () -> new EntityNotFoundException("Ce type de consultation n'existe pas")));
+
+            //MedecinDto medecinDto = consultationDto.getMedecin();
+            MedecinDto medecinDto = medecinMapper.toMedecin(medecinRepository.findById(idMedecin)
+                    .orElseThrow( () -> new EntityNotFoundException("Ce médecin n'existe pas")));
 
             PatientDto patientDto = consultationDto.getRendezVouses().getPatient();
             PatientDto newPatientDto = patientMapper.toPatient(patientRepository.save(patientMapper.fromPatient(patientDto)));
@@ -97,24 +102,23 @@ public class ConsultationService {
             RendezVousDto newRendezVousDto = rendezVousMapper.toRendezVous(rendezVousRepository.save(rendezVousMapper.fromRendezVous(rendezVousDto)));
 
             PrescriptionDto prescriptionDto = consultationDto.getPrescription();
-            MedecinDto medecinDto = consultationDto.getMedecin();
-            TypeConsultationDto newTypeConsultation = typeConsultationMapper.toTypeConsultation(typeConsultationRepository.save(typeConsultationMapper.fromTypeConsultation(typeConsultation)));
             PrescriptionDto newPrescriptionDto = prescriptionMapper.toPrescription(prescriptionRepository.save(prescriptionMapper.fromPrescription(prescriptionDto)));
-            MedecinDto newMedecinDto = medecinMapper.toMedecin(medecinRepository.save(medecinMapper.fromMedecin(medecinDto)));
 
-            consultationDto.setTypeConsultation(newTypeConsultation);
+            //TypeConsultationDto newTypeConsultation = typeConsultationMapper.toTypeConsultation(typeConsultationRepository.save(typeConsultationMapper.fromTypeConsultation(typeConsultation)));
+            ///MedecinDto newMedecinDto = medecinMapper.toMedecin(medecinRepository.save(medecinMapper.fromMedecin(medecinDto)));
+
+            consultationDto.setTypeConsultation(typeConsultation);
             consultationDto.setPrescription(newPrescriptionDto);
 
             consultationDto.setPatient(newPatientDto);
             consultationDto.setRendezVouses(newRendezVousDto);
-            consultationDto.setMedecin(newMedecinDto);
+            consultationDto.setMedecin(medecinDto);
             consultationDto.getRendezVouses().setPatient(newPatientDto);
-
 
             return consultationMapper.toConsultation(consultationRepository.save(consultationMapper.fromConsultation(consultationDto)));
 
         } catch (DataIntegrityViolationException e) {
-            throw new RuntimeException(" existe déjà !!!",e);
+            throw new RuntimeException(e.getMessage(),e);
 
         }catch (DataAccessException e) {
             throw new RuntimeException("Erreur de connexion à la base de données !!!", e);

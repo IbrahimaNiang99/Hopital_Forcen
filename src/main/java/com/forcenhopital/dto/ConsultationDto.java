@@ -22,7 +22,7 @@ public class ConsultationDto {
     @NotNull(message = "Veuillez entrer la synthèse")
     private String synthese;
 
-    @NotNull(message = "Veuillez indiquer le medecin")
+    //@NotNull(message = "Veuillez indiquer le medecin")
     private MedecinDto medecin;
 
     @NotNull(message = "Donner le type de consultation")
