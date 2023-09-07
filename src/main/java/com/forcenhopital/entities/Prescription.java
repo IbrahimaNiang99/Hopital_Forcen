@@ -1,15 +1,10 @@
 package com.forcenhopital.entities;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,6 +30,6 @@ public class Prescription {
    // @Column(nullable = false)
     private String note;
 
-    @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)
-    private Set<Consultation> consultation;
+    @OneToMany(mappedBy = "prescription")
+    private Set<Consultation> consultation = new HashSet<>();;
 }

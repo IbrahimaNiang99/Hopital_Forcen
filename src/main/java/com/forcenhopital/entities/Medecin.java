@@ -2,18 +2,10 @@ package com.forcenhopital.entities;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -61,15 +53,15 @@ public class Medecin {
     @JoinTable(name = "medecin_specialite",
         joinColumns = @JoinColumn(name = "medecin_id"),
         inverseJoinColumns = @JoinColumn(name = "specialite_id"))
-    private Set<Specialite> specialites = new HashSet<>();
+    private List<Specialite> specialites;
 
     @ManyToMany
     @JoinTable(name = "medecin_service",
         joinColumns = @JoinColumn(name = "medecin_id"),
         inverseJoinColumns = @JoinColumn(name = "service_id"))
-    private Set<ServiceEntity> services =  new HashSet<>();
+    private List<ServiceEntity> services;
 
-    @OneToMany(mappedBy="medecin", cascade = CascadeType.ALL)
-    private Set<Consultation> consultations =  new HashSet<>();
+    @OneToMany(mappedBy="medecin", fetch = FetchType.LAZY)
+    private List<Consultation> consultations;
     
 }

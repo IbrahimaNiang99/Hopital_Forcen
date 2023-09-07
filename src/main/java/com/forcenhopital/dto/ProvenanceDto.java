@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProvenanceDto {
+
     private Long idProvenance;
 
     @NotNull(message = "Veuillez entrer le lieu du provenance")

@@ -47,5 +47,5 @@ public class MedecinDto {
     private String telTravail;
 
     @Nullable
-    private Set<ServiceEntity> services =  new HashSet<>();
+    private Set<ServiceEntity> services;
 }

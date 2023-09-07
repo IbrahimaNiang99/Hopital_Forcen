@@ -29,7 +29,7 @@ public class Traitement {
     private int prix;
 
     @ManyToOne
-    @JoinColumn(name = "Hospitalisation_id")
+    @JoinColumn(name = "Hospitalisation_id", referencedColumnName = "idAdmission")
     private Hospitalisation hospitalisation;
-    
+
 }

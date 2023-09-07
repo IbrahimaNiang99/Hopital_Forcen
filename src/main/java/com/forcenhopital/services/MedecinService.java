@@ -26,8 +26,6 @@ import com.forcenhopital.repository.MedecinRepository;
 import com.forcenhopital.repository.ServiceRepository;
 
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpServerErrorException;
-
 @Service
 @Transactional
 public class MedecinService {
@@ -37,10 +35,8 @@ public class MedecinService {
     private final ServiceRepository serviceRepository;
     private final SpecialiteRepository specialiteRepository;
     MessageSource messageSource;
-
     @Autowired
     public MedecinService(MedecinRepository medecinRepository, MedecinMapper medecinMapper, MessageSource messageSource, ServiceRepository serviceRepository, SpecialiteRepository specialiteRepository, ServiceMapper serviceMapper) {
-
         this.medecinRepository = medecinRepository;
         this.medecinMapper = medecinMapper;
         this.messageSource = messageSource;
@@ -140,7 +136,7 @@ public class MedecinService {
     }
 
     // Attribuer un sercice à un medecin
-    public Medecin addSpecialiteToMedecin(Long idMedecin, Long idSpecialite){
+    /*public Medecin addSpecialiteToMedecin(Long idMedecin, Long idSpecialite){
         Set<Specialite> specialiteSet = null;
         Medecin medecin = medecinRepository.findById(idMedecin)
                 .orElseThrow(()->
@@ -154,6 +150,6 @@ public class MedecinService {
         specialiteSet.add(specialite);
         medecin.setSpecialites(specialiteSet);
         return medecinRepository.save(medecin);
-    }
+    }*/
 
 }

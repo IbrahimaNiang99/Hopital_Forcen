@@ -1,17 +1,11 @@
 package com.forcenhopital.entities;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -66,19 +60,18 @@ public class Patient {
     @Column(length = 50, nullable = false)
     private String nomPersonneAPrevenir;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
-    private Set<Consultation> consultation;
+    @OneToMany(mappedBy = "patient")
+    private List<Consultation> consultation;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "provenance_id")
     private Provenance provenance;
 
-    @ManyToOne
-    @JoinColumn(name = "codeRDV")
-    private RendezVous rendezVous;
+    @OneToMany(mappedBy = "patient")
+    private List<RendezVous> rendezVous;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
-    private Set<Hospitalisation> hospitalisations;
+    @OneToMany(mappedBy = "patient")
+    private List<Hospitalisation> hospitalisations;
 
 
 

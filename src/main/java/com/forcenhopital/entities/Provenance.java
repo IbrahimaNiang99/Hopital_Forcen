@@ -1,5 +1,6 @@
 package com.forcenhopital.entities;
 
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -25,6 +26,6 @@ public class Provenance {
     @Column(length = 50, nullable = false)
     private String lieuDeProvenance;
 
-    @OneToMany(mappedBy = "provenance", cascade = CascadeType.ALL)
-    private Set<Patient> patient;
+    @OneToMany(mappedBy = "provenance")
+    private List<Patient> patient;
 }

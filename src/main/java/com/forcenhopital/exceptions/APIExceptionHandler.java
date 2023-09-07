@@ -87,7 +87,7 @@ public class APIExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<APIException> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        APIException exception = new APIException("the input provided is invalid", HttpStatus.BAD_REQUEST, LocalDateTime.now());
+        APIException exception = new APIException("Tous les champs sont obligatoires", HttpStatus.BAD_REQUEST, LocalDateTime.now());
         return new ResponseEntity<>(exception, HttpStatus.BAD_REQUEST);
     }
 

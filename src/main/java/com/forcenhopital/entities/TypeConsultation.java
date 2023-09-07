@@ -1,4 +1,6 @@
 package com.forcenhopital.entities;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -27,8 +29,8 @@ public class TypeConsultation {
     private int prixConsultation;
 
     @OneToMany(mappedBy="typeConsultation")
-    private Set<Consultation> consultations;
-    
+    private List<Consultation> consultations ;
+
 
 
 }

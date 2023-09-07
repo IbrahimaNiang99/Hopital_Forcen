@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.forcenhopital.dto.MedecinDto;
-import com.forcenhopital.entities.Medecin;
 import com.forcenhopital.services.MedecinService;
 
 import jakarta.validation.Valid;
@@ -15,7 +14,6 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/medecin")
 public class MedecinController {
     private final MedecinService medecinService;
-
     @Autowired
     public MedecinController(MedecinService medecinService) {
         this.medecinService = medecinService;
@@ -41,10 +39,10 @@ public class MedecinController {
     public MedecinDto addServiceToMedecin(@PathVariable Long idMedecin, @PathVariable Long idService){
         return medecinService.addServiceToMedecin(idMedecin, idService);
     }
-
+/*
     @PutMapping("/{idMedecin}/specialite/{idSpecialite}")
     public Medecin addSpecialiteToMedecin(@PathVariable Long idMedecin, @PathVariable Long idSpecialite){
         return medecinService.addSpecialiteToMedecin(idMedecin, idSpecialite);
-    }
+    }*/
 
 }
