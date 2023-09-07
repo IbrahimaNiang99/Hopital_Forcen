@@ -25,9 +25,9 @@ public class HospitalisationController {
         return hospitalisationService.getById(id);
     }
 
-    @PostMapping("/ajout/{idPatient}")
-    public HospitalisationDto ajout(@Valid @RequestBody HospitalisationDto hospitalisationDto, @PathVariable Long idPatient){
-        return hospitalisationService.ajout(hospitalisationDto, idPatient);
+    @PostMapping("/ajout/{idPatient}/chambre/{idChambre}")
+    public HospitalisationDto ajout(@Valid @RequestBody HospitalisationDto hospitalisationDto, @PathVariable Long idPatient, @PathVariable Long idChambre){
+        return hospitalisationService.ajout(hospitalisationDto, idPatient, idChambre);
     }
 
 

@@ -1,12 +1,15 @@
 package com.forcenhopital.services;
 
+import com.forcenhopital.dto.ChambreDto;
 import com.forcenhopital.dto.FactureDto;
 import com.forcenhopital.dto.HospitalisationDto;
 import com.forcenhopital.dto.PatientDto;
 import com.forcenhopital.exceptions.EntityNotFoundException;
+import com.forcenhopital.mapping.ChambreMapper;
 import com.forcenhopital.mapping.FactureMapper;
 import com.forcenhopital.mapping.HospitalisationMapper;
 import com.forcenhopital.mapping.PatientMapper;
+import com.forcenhopital.repository.ChambreRepository;
 import com.forcenhopital.repository.FactureRepository;
 import com.forcenhopital.repository.HospitalisationRepository;
 import com.forcenhopital.repository.PatientRepository;
@@ -28,15 +31,19 @@ public class HospitalisationService {
     private final PatientMapper patientMapper;
     private final PatientRepository patientRepository;
     private final FactureRepository factureRepository;
+    private final ChambreMapper chambreMapper;
+    private final ChambreRepository chambreRepository;
 
     @Autowired
-    public HospitalisationService(HospitalisationRepository hospitalisationRepository, HospitalisationMapper hospitalisationMapper, FactureMapper factureMapper, PatientMapper patientMapper, PatientRepository patientRepository, FactureRepository factureRepository) {
+    public HospitalisationService(HospitalisationRepository hospitalisationRepository, HospitalisationMapper hospitalisationMapper, FactureMapper factureMapper, PatientMapper patientMapper, PatientRepository patientRepository, FactureRepository factureRepository, ChambreMapper chambreMapper, ChambreRepository chambreRepository) {
         this.hospitalisationRepository = hospitalisationRepository;
         this.hospitalisationMapper = hospitalisationMapper;
         this.factureMapper = factureMapper;
         this.patientMapper = patientMapper;
         this.patientRepository = patientRepository;
         this.factureRepository = factureRepository;
+        this.chambreMapper = chambreMapper;
+        this.chambreRepository = chambreRepository;
     }
 
     // Controle de champs de saisie
@@ -59,8 +66,9 @@ public class HospitalisationService {
     }
 
     // Nouvelle hospitalisation
-    public HospitalisationDto ajout(HospitalisationDto hospitalisationDto, Long idPatient){
-        controleDeChamps(hospitalisationDto);
+    public HospitalisationDto ajout(HospitalisationDto hospitalisationDto, Long idPatient, Long idChambre){
+
+        //controleDeChamps(hospitalisationDto);
 
         try {
             FactureDto facture = hospitalisationDto.getFacture();
@@ -69,8 +77,13 @@ public class HospitalisationService {
             PatientDto patient = patientMapper.toPatient(patientRepository.findById(idPatient)
                     .orElseThrow( () -> new EntityNotFoundException("Ce patient n'existe pas")));
 
+            ChambreDto chambre = chambreMapper.toChambre(chambreRepository.findById(idChambre)
+                    .orElseThrow( () -> new EntityNotFoundException("Cette chambre n'existe pas")));
+
+            System.out.print(chambre);
             hospitalisationDto.setFacture(newFacture);
             hospitalisationDto.setPatient(patient);
+            hospitalisationDto.setChambre(chambre);
 
             return hospitalisationMapper.toHospitalisation(hospitalisationRepository
                     .save(hospitalisationMapper

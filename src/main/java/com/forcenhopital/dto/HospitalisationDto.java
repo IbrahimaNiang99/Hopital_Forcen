@@ -60,4 +60,7 @@ public class HospitalisationDto {
     @NotNull(message = "Veuillez indiquer la facture")
     private FactureDto facture;
 
+    //@NotNull(message = "Veuillez indiquer la chambre")
+    private ChambreDto chambre;
+
 }

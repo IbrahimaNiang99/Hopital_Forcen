@@ -1,4 +1,5 @@
 package com.forcenhopital.entities;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -35,7 +36,7 @@ public class Chambre {
     private int prix;
 
     @OneToMany(mappedBy = "chambre")
-    private Set<Hospitalisation> hospitalisations;
+    private List<Hospitalisation> hospitalisations;
 
     @ManyToOne
     @JoinColumn(name = "service_id")

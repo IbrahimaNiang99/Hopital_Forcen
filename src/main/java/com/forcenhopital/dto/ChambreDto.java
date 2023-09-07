@@ -1,5 +1,6 @@
 package com.forcenhopital.dto;
 
+import com.forcenhopital.entities.ServiceEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +25,8 @@ public class ChambreDto {
 
     @NotNull(message = "Veuillez entrer le prix de la chambre")
     private int prix;
+
+    private ServiceDto service;
 
     
 }
