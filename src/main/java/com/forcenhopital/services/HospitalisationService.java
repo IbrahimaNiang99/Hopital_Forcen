@@ -39,11 +39,28 @@ public class HospitalisationService {
         this.factureRepository = factureRepository;
     }
 
-
+    // Controle de champs de saisie
+    public void controleDeChamps(HospitalisationDto hospitalisationDto){
+        if (
+                hospitalisationDto.getAccompagnant() == null || hospitalisationDto.getAccompagnant().isEmpty() ||
+                        hospitalisationDto.getDateAdmission() == null ||
+                        hospitalisationDto.getDateEntree() == null ||
+                        hospitalisationDto.getMedecinTraitant() == null || hospitalisationDto.getMedecinTraitant().isEmpty() ||
+                        hospitalisationDto.getLienParental() == null || hospitalisationDto.getLienParental().isEmpty() ||
+                        hospitalisationDto.getMotifAdmission() == null || hospitalisationDto.getMotifAdmission().isEmpty() ||
+                        hospitalisationDto.getMotifSortie() == null || hospitalisationDto.getMotifSortie().isEmpty() ||
+                        hospitalisationDto.getResultatSortie() == null || hospitalisationDto.getResultatSortie().isEmpty() ||
+                        hospitalisationDto.getDateSortie() == null ||
+                        hospitalisationDto.getTypeAdmission() == null || hospitalisationDto.getTypeAdmission().isEmpty() ||
+                        hospitalisationDto.getFacture() == null
+        ){
+            throw new RuntimeException("Tous les champs sont obligatoires !!!");
+        }
+    }
 
     // Nouvelle hospitalisation
     public HospitalisationDto ajout(HospitalisationDto hospitalisationDto, Long idPatient){
-        //controleDeChamps(hospitalisationDto);
+        controleDeChamps(hospitalisationDto);
 
         try {
             FactureDto facture = hospitalisationDto.getFacture();
