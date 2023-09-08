@@ -50,9 +50,5 @@ public class PatientDto {
     private String nomPersonneAPrevenir ;
 
     private ProvenanceDto provenance;
-/*
-    private RendezVous rendezVous ;
 
-    private Consultation consultation ;
-*/
 }

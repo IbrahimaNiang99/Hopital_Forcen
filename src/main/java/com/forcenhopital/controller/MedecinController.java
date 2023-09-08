@@ -39,10 +39,10 @@ public class MedecinController {
     public MedecinDto addServiceToMedecin(@PathVariable Long idMedecin, @PathVariable Long idService){
         return medecinService.addServiceToMedecin(idMedecin, idService);
     }
-/*
+
     @PutMapping("/{idMedecin}/specialite/{idSpecialite}")
-    public Medecin addSpecialiteToMedecin(@PathVariable Long idMedecin, @PathVariable Long idSpecialite){
+    public MedecinDto addSpecialiteToMedecin(@PathVariable Long idMedecin, @PathVariable Long idSpecialite){
         return medecinService.addSpecialiteToMedecin(idMedecin, idSpecialite);
-    }*/
+    }
 
 }

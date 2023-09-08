@@ -4,6 +4,7 @@ import com.forcenhopital.entities.ServiceEntity;
 import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import lombok.AllArgsConstructor;
@@ -46,6 +47,10 @@ public class MedecinDto {
     @NotNull(message = "Veuillez entrer le numéro de téléphone de la personne à prevenir")
     private String telTravail;
 
-    @Nullable
-    private Set<ServiceEntity> services;
+    //@Nullable
+    private List<ServiceDto> services;
+
+    private List<SpecialiteDto> specialites;
+
+
 }

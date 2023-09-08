@@ -1,15 +1,15 @@
 package com.forcenhopital.services;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import com.forcenhopital.dto.ServiceDto;
-import com.forcenhopital.entities.Specialite;
+import com.forcenhopital.dto.SpecialiteDto;
 import com.forcenhopital.exceptions.EntityNotFoundException;
 import com.forcenhopital.exceptions.RequestException;
 import com.forcenhopital.mapping.ServiceMapper;
+import com.forcenhopital.mapping.SpecialiteMapper;
 import com.forcenhopital.repository.SpecialiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.forcenhopital.dto.MedecinDto;
 import com.forcenhopital.entities.Medecin;
-import com.forcenhopital.entities.ServiceEntity;
 import com.forcenhopital.helper.Helper;
 import com.forcenhopital.mapping.MedecinMapper;
 import com.forcenhopital.repository.MedecinRepository;
@@ -34,15 +33,17 @@ public class MedecinService {
     private final ServiceMapper serviceMapper;
     private final ServiceRepository serviceRepository;
     private final SpecialiteRepository specialiteRepository;
+    private final SpecialiteMapper specialiteMapper;
     MessageSource messageSource;
     @Autowired
-    public MedecinService(MedecinRepository medecinRepository, MedecinMapper medecinMapper, MessageSource messageSource, ServiceRepository serviceRepository, SpecialiteRepository specialiteRepository, ServiceMapper serviceMapper) {
+    public MedecinService(MedecinRepository medecinRepository, MedecinMapper medecinMapper, MessageSource messageSource, ServiceRepository serviceRepository, SpecialiteRepository specialiteRepository, ServiceMapper serviceMapper, SpecialiteMapper specialiteMapper) {
         this.medecinRepository = medecinRepository;
         this.medecinMapper = medecinMapper;
         this.messageSource = messageSource;
         this.serviceRepository = serviceRepository;
         this.specialiteRepository = specialiteRepository;
         this.serviceMapper = serviceMapper;
+        this.specialiteMapper = specialiteMapper;
     }
 
     // Récuperer la liste des medecins
@@ -120,7 +121,7 @@ public class MedecinService {
 
     // Attribuer un sercice à un medecin
     public MedecinDto addServiceToMedecin(Long idMedecin, Long idService){
-        Set<ServiceEntity> serviceSet = null;
+        List<ServiceDto> serviceList = null;
 
         MedecinDto medecin = medecinMapper.toMedecin(medecinRepository.findById(idMedecin)
                 .orElseThrow( () -> new EntityNotFoundException("Il n'existe de pas de medecin avec un id = "+idMedecin)));
@@ -128,28 +129,28 @@ public class MedecinService {
         ServiceDto serviceDto = serviceMapper.toService(serviceRepository.findById(idService)
                 .orElseThrow( () -> new EntityNotFoundException("Il n'existe de pas de service avec un id = "+idService)))  ;
 
-        serviceSet = medecin.getServices();
-        serviceSet.add(serviceMapper.fromService(serviceDto));
-        medecin.setServices(serviceSet);
+        serviceList = medecin.getServices();
+        serviceList.add(serviceDto);
+        medecin.setServices(serviceList);
         return medecinMapper.toMedecin(medecinRepository.save(medecinMapper.fromMedecin(medecin)));
 
     }
 
     // Attribuer un sercice à un medecin
-    /*public Medecin addSpecialiteToMedecin(Long idMedecin, Long idSpecialite){
-        Set<Specialite> specialiteSet = null;
-        Medecin medecin = medecinRepository.findById(idMedecin)
+    public MedecinDto addSpecialiteToMedecin(Long idMedecin, Long idSpecialite){
+        List<SpecialiteDto> specialiteList = null;
+        MedecinDto medecin = medecinMapper.toMedecin(medecinRepository.findById(idMedecin)
                 .orElseThrow(()->
-                        new EntityNotFoundException(("Il n'existe de pas de medecin avec un id = "+idMedecin)));
+                        new EntityNotFoundException(("Il n'existe de pas de medecin avec un id = "+idMedecin))));
 
-        Specialite specialite = specialiteRepository.findById(idSpecialite)
+        SpecialiteDto specialite = specialiteMapper.toSpecialite(specialiteRepository.findById(idSpecialite)
                 .orElseThrow(()->
-                        new EntityNotFoundException(("Il n'existe de pas de specialiste avec un id = "+idSpecialite)));
+                        new EntityNotFoundException(("Il n'existe de pas de specialiste avec un id = "+idSpecialite))));
 
-        specialiteSet = medecin.getSpecialites();
-        specialiteSet.add(specialite);
-        medecin.setSpecialites(specialiteSet);
-        return medecinRepository.save(medecin);
-    }*/
+        specialiteList = medecin.getSpecialites();
+        specialiteList.add(specialite);
+        medecin.setSpecialites(specialiteList);
+        return medecinMapper.toMedecin(medecinRepository.save(medecinMapper.fromMedecin(medecin)));
+    }
 
 }

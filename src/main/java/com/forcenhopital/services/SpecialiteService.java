@@ -41,7 +41,6 @@ public class SpecialiteService {
         return StreamSupport.stream(specialiteRepository.findAll().spliterator(), false)
                             .map(specialiteMapper::toSpecialite)
                             .collect(Collectors.toList());
-
     }
 
     // Ajouter une specialite
@@ -54,7 +53,6 @@ public class SpecialiteService {
 
 
         } catch (DataIntegrityViolationException e) {
-            //
             throw new RuntimeException("Le nom de la existe déjà !!!", e);
 
         }catch (DataAccessException e){
