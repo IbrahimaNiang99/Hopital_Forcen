@@ -1,6 +1,7 @@
 package com.forcenhopital.entities;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -29,8 +30,8 @@ public class ServiceEntity {
     private String nomService;
 
     @ManyToMany(mappedBy = "services", fetch = FetchType.EAGER)
-    private Set<Medecin> medecins = new HashSet<>();
+    private List<Medecin> medecins ;
 
     @OneToMany(mappedBy = "service")
-    private Set<Chambre> chambres;
+    private List<Chambre> chambres;
 }

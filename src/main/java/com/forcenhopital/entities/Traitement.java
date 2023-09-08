@@ -22,10 +22,10 @@ public class Traitement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTraitement;
 
-    @Column(length = 40, nullable = false)
+    //@Column(length = 40, nullable = false)
     private Date dateTraitement;
 
-    @Column(length = 20, nullable = false)
+    //@Column(length = 20, nullable = false)
     private int prix;
 
     @ManyToOne

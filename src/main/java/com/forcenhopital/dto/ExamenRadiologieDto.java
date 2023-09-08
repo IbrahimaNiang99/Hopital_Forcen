@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ExamenRadiologieDto extends TraitementDto{
 
-    @NotNull(message = "Veuillez entrer la designation")
+    //@NotNull(message = "Veuillez entrer la designation")
     private String designation;
 
-    @NotNull(message = "Veuillez entrer le resultat de l'examen")
+    //@NotNull(message = "Veuillez entrer le resultat de l'examen")
     private String resultatExamen;
 }

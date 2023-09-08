@@ -1,6 +1,7 @@
 package com.forcenhopital.entities;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -20,6 +21,6 @@ public class Specialite {
     @Column(length = 40, nullable = false)
     private String nomSpecialite;
 
-    @ManyToMany(mappedBy = "specialites", fetch = FetchType.EAGER)
-    private Set<Medecin> medecins = new HashSet<>();
+    @ManyToMany(mappedBy = "specialites")
+    private List<Medecin> medecins ;
 }
