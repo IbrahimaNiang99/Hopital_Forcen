@@ -1,8 +1,6 @@
 package com.forcenhopital.entities;
 
 import java.util.Date;
-
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

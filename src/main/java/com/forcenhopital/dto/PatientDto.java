@@ -1,13 +1,6 @@
 package com.forcenhopital.dto;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import com.forcenhopital.entities.Consultation;
-import com.forcenhopital.entities.Provenance;
-import com.forcenhopital.entities.RendezVous;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

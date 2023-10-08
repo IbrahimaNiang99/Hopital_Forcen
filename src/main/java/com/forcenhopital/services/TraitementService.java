@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-
 public class TraitementService {
     private final TraitementMapper traitementMapper;
     private final TraitementRepository traitementRepository;
@@ -35,7 +34,7 @@ public class TraitementService {
             throw new RuntimeException("Veiller remplir tous les chmps");
         }
     }
-
+/*
     // Ajouter un traitement
     public TraitementDto ajout(TraitementDto traitementDto, Long idHospitalisation){
 
@@ -44,15 +43,22 @@ public class TraitementService {
         try {
             HospitalisationDto hospi = hospitalisationMapper.toHospitalisation(hospitalisationRepository.findById(idHospitalisation)
                     .orElseThrow( () -> new EntityNotFoundException("Cette hospitalisation n'existe pas")));
+
+            List<TraitementDto> traitementliste = hospi.getTraitements();
+            traitementliste.add(traitementDto);
+            hospi.setTraitements(traitementliste);
             return traitementDto;
         }catch (Exception e){
             throw new RuntimeException(e.getMessage());
         }
     }
-
+*/
     public List<TraitementDto> liste(){
         return StreamSupport.stream(traitementRepository.findAll().spliterator(), false)
                 .map(traitementMapper::toTraitement)
                 .collect(Collectors.toList());
     }
+
+
+
 }

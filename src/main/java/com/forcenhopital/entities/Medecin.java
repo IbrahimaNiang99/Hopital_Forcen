@@ -1,9 +1,7 @@
 package com.forcenhopital.entities;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,10 +41,10 @@ public class Medecin {
     @Column(length = 40, nullable = false)
     private String nationalite;
 
-    @Column(length = 40, nullable = false)
+    @Column(unique = true, length = 40, nullable = false)
     private String telPersonnel;
 
-    @Column(length = 40, nullable = false)
+    @Column(unique = true, length = 40, nullable = false)
     private String telTravail;
 
     @ManyToMany

@@ -1,9 +1,8 @@
 package com.forcenhopital.dto;
+import java.util.ArrayList;
 import java.util.Date;
-
-import com.forcenhopital.entities.Facture;
+import java.util.List;
 import jakarta.annotation.Nullable;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -62,5 +61,7 @@ public class HospitalisationDto {
 
     //@NotNull(message = "Veuillez indiquer la chambre")
     private ChambreDto chambre;
+
+    private List<TraitementDto> traitements = new ArrayList<>();
 
 }

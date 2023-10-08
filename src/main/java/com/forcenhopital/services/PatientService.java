@@ -17,7 +17,6 @@ import java.util.stream.StreamSupport;
 @Service
 @Transactional
 public class PatientService {
-
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
     private final ConsultationRepository consultationRepository;

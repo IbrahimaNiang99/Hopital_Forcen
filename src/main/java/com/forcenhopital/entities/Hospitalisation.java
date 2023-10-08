@@ -1,7 +1,7 @@
 package com.forcenhopital.entities;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -56,9 +56,6 @@ public class Hospitalisation {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @OneToMany(mappedBy = "hospitalisation")
-    private List<Traitement> traitement;
-
     @OneToOne
     @JoinColumn(name = "facture_id", referencedColumnName = "idFacture")
     private Facture facture;
@@ -66,4 +63,8 @@ public class Hospitalisation {
     @ManyToOne
     @JoinColumn(name = "chambre_id")
     private Chambre chambre;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "idHospitalisation")
+    private List<Traitement> traitements = new ArrayList<>();
 }

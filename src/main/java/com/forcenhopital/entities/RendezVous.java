@@ -1,8 +1,6 @@
 package com.forcenhopital.entities;
 
 import java.util.Date;
-import java.util.Set;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +21,7 @@ public class RendezVous {
     @Column(length = 20, nullable = false)
     private String service;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 150, nullable = false)
     private String medecin;
 
     @OneToOne(mappedBy = "rendezVouses")

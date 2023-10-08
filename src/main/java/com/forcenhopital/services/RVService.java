@@ -28,7 +28,8 @@ public class RVService {
     private  final PatientRepository patientRepository;
 
     @Autowired
-    public RVService(RendezVousRepository rendezVousRepository, RendezVousMapper rendezVousMapper, PatientMapper patientMapper, PatientRepository patientRepository) {
+    public RVService(RendezVousRepository rendezVousRepository, RendezVousMapper rendezVousMapper,
+                     PatientMapper patientMapper, PatientRepository patientRepository) {
         this.rendezVousRepository = rendezVousRepository;
         this.rendezVousMapper = rendezVousMapper;
         this.patientMapper = patientMapper;

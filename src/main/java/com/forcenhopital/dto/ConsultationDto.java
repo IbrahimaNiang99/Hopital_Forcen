@@ -1,8 +1,6 @@
 package com.forcenhopital.dto;
 
 import java.util.Date;
-
-import com.forcenhopital.entities.*;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -25,7 +23,7 @@ public class ConsultationDto {
     //@NotNull(message = "Veuillez indiquer le medecin")
     private MedecinDto medecin;
 
-    @NotNull(message = "Donner le type de consultation")
+    @Nullable
     private TypeConsultationDto typeConsultation;
 
     @Nullable

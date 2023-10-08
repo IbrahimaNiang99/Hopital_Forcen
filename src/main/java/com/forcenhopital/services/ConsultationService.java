@@ -82,8 +82,8 @@ public class ConsultationService {
         /*
         * Controle de saisie
         * */
-        controleDeSaisie(consultationDto);
-        try {
+        //controleDeSaisie(consultationDto);
+        //try {
 
             //TypeConsultationDto typeConsultation = consultationDto.getTypeConsultation();
             TypeConsultationDto typeConsultation = typeConsultationMapper.toTypeConsultation(typeConsultationRepository.findById(idTypeConsultation)
@@ -93,10 +93,11 @@ public class ConsultationService {
             MedecinDto medecinDto = medecinMapper.toMedecin(medecinRepository.findById(idMedecin)
                     .orElseThrow( () -> new EntityNotFoundException("Ce médecin n'existe pas")));
 
+            // On doit d'abord ajouter un Patient avant un rendez-vous
             PatientDto patientDto = consultationDto.getRendezVouses().getPatient();
             PatientDto newPatientDto = patientMapper.toPatient(patientRepository.save(patientMapper.fromPatient(patientDto)));
 
-            // On doit d'abord ajouter un Patient avant un rendez-vous
+
             RendezVousDto rendezVousDto = consultationDto.getRendezVouses();
             rendezVousDto.setPatient(newPatientDto);
             RendezVousDto newRendezVousDto = rendezVousMapper.toRendezVous(rendezVousRepository.save(rendezVousMapper.fromRendezVous(rendezVousDto)));
@@ -116,7 +117,7 @@ public class ConsultationService {
             consultationDto.getRendezVouses().setPatient(newPatientDto);
 
             return consultationMapper.toConsultation(consultationRepository.save(consultationMapper.fromConsultation(consultationDto)));
-
+/*
         } catch (DataIntegrityViolationException e) {
             throw new RuntimeException(e.getMessage(),e);
 
@@ -125,7 +126,7 @@ public class ConsultationService {
 
         }catch (Exception e){
             throw new RuntimeException("Une erreur s'est produite lors de cette opération !!!", e);
-        }
+        }*/
     }
 
     // Get Consultation ById
@@ -134,16 +135,8 @@ public class ConsultationService {
                 .orElseThrow( () -> new EntityNotFoundException("Cette consultation n'existe pas")));
     }
 
-
-
-
-
-
-
-
-
-
-
-
+    public int nbConsultation(){
+        return 2;
+    }
 
 }

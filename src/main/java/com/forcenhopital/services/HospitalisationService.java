@@ -1,22 +1,14 @@
 package com.forcenhopital.services;
 
-import com.forcenhopital.dto.ChambreDto;
-import com.forcenhopital.dto.FactureDto;
-import com.forcenhopital.dto.HospitalisationDto;
-import com.forcenhopital.dto.PatientDto;
+import com.forcenhopital.dto.*;
 import com.forcenhopital.exceptions.EntityNotFoundException;
-import com.forcenhopital.mapping.ChambreMapper;
-import com.forcenhopital.mapping.FactureMapper;
-import com.forcenhopital.mapping.HospitalisationMapper;
-import com.forcenhopital.mapping.PatientMapper;
-import com.forcenhopital.repository.ChambreRepository;
-import com.forcenhopital.repository.FactureRepository;
-import com.forcenhopital.repository.HospitalisationRepository;
-import com.forcenhopital.repository.PatientRepository;
+import com.forcenhopital.mapping.*;
+import com.forcenhopital.repository.*;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -33,9 +25,13 @@ public class HospitalisationService {
     private final FactureRepository factureRepository;
     private final ChambreMapper chambreMapper;
     private final ChambreRepository chambreRepository;
+    private final TraitementMapper traitementMapper;
+    private final TraitementRepository traitementRepository;
 
     @Autowired
-    public HospitalisationService(HospitalisationRepository hospitalisationRepository, HospitalisationMapper hospitalisationMapper, FactureMapper factureMapper, PatientMapper patientMapper, PatientRepository patientRepository, FactureRepository factureRepository, ChambreMapper chambreMapper, ChambreRepository chambreRepository) {
+    public HospitalisationService(HospitalisationRepository hospitalisationRepository, HospitalisationMapper hospitalisationMapper,
+                                  FactureMapper factureMapper, PatientMapper patientMapper, PatientRepository patientRepository,
+                                  FactureRepository factureRepository, ChambreMapper chambreMapper, ChambreRepository chambreRepository, TraitementMapper traitementMapper, TraitementRepository traitementRepository) {
         this.hospitalisationRepository = hospitalisationRepository;
         this.hospitalisationMapper = hospitalisationMapper;
         this.factureMapper = factureMapper;
@@ -44,6 +40,8 @@ public class HospitalisationService {
         this.factureRepository = factureRepository;
         this.chambreMapper = chambreMapper;
         this.chambreRepository = chambreRepository;
+        this.traitementMapper = traitementMapper;
+        this.traitementRepository = traitementRepository;
     }
 
     // Controle de champs de saisie
@@ -64,15 +62,16 @@ public class HospitalisationService {
             throw new RuntimeException("Tous les champs sont obligatoires !!!");
         }
     }
-
+/*
     // Nouvelle hospitalisation
     public HospitalisationDto ajout(HospitalisationDto hospitalisationDto, Long idPatient, Long idChambre){
-
         //controleDeChamps(hospitalisationDto);
 
         try {
+            List<TraitementDto> traitements = null;
             FactureDto facture = hospitalisationDto.getFacture();
             FactureDto newFacture = factureMapper.toFacture(factureRepository.save(factureMapper.fromFacture(facture)));
+
 
             PatientDto patient = patientMapper.toPatient(patientRepository.findById(idPatient)
                     .orElseThrow( () -> new EntityNotFoundException("Ce patient n'existe pas")));
@@ -80,7 +79,17 @@ public class HospitalisationService {
             ChambreDto chambre = chambreMapper.toChambre(chambreRepository.findById(idChambre)
                     .orElseThrow( () -> new EntityNotFoundException("Cette chambre n'existe pas")));
 
-            System.out.print(chambre);
+            TraitementDto traitement = new TraitementDto();
+
+            TraitementDto newTraitement = traitementMapper.toTraitement(traitementRepository.save(traitementMapper.fromTraitement(traitement)));
+
+            traitements = hospitalisationDto.getTraitements();
+
+            if (traitements == null){
+                traitements = new ArrayList<>();
+            }
+            traitements.add(newTraitement);
+            hospitalisationDto.setTraitements(traitements);
             hospitalisationDto.setFacture(newFacture);
             hospitalisationDto.setPatient(patient);
             hospitalisationDto.setChambre(chambre);
@@ -93,7 +102,7 @@ public class HospitalisationService {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-
+*/
 
     // Liste des hospitalisations
     public List<HospitalisationDto> liste(){
@@ -107,5 +116,24 @@ public class HospitalisationService {
         return hospitalisationMapper.toHospitalisation(hospitalisationRepository.findById(id)
                 .orElseThrow( () -> new EntityNotFoundException("Cette hospitalisation n'existe pas")));
     }
+    public HospitalisationDto update(Long idHospi, HospitalisationDto hospitalisationDto){
+        //controleDeChamps(hospitalisationDto);
 
+        try {
+
+            if (hospitalisationDto.getTraitements() != null){
+                hospitalisationDto.setTraitements(hospitalisationDto.getTraitements());
+            }
+
+            return hospitalisationRepository.findById(idHospi)
+                    .map(entity ->{
+                        hospitalisationDto.setIdAdmission(idHospi);
+                        return hospitalisationMapper.toHospitalisation(
+                                hospitalisationRepository.save(hospitalisationMapper.fromHospitalisation(hospitalisationDto)));
+                    }).orElseThrow( ()-> new EntityNotFoundException("Cette hospitalisation n'existe pas"));
+
+        }catch (Exception e){
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 }

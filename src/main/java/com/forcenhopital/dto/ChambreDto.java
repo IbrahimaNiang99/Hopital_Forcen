@@ -1,6 +1,4 @@
 package com.forcenhopital.dto;
-
-import com.forcenhopital.entities.ServiceEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

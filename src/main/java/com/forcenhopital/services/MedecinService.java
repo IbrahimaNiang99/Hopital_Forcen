@@ -65,9 +65,6 @@ public class MedecinService {
 
         if (!Helper.isValidSenegalPhoneNumber(medecinDto.getTelPersonnel())) {
             throw new RequestException("Le numéro de téléphone n'est pas celui du Sénégal");
-
-        }else if(!Helper.isValidSenegalPhoneNumber(medecinDto.getTelTravail())){
-            throw new RequestException("Le numéro de téléphone n'est pas celui du Sénégal");
         }
     }
 
@@ -102,10 +99,10 @@ public class MedecinService {
             return medecinMapper.toMedecin(medecinRepository.save(medecinMapper.fromMedecin(medecinDto)));
 
         } catch (DataIntegrityViolationException e) {
-            throw new RuntimeException("L'email ou le numéro de téléphone existe déjà !!!");
-
-        }catch (DataAccessException e){
-            throw new RequestException("Erreur de connexion a la base de donnees ", HttpStatus.BAD_REQUEST);
+            throw new RuntimeException("L'email ou le numéro de téléphone existe déjà !!!", e);
+        }
+        catch (DataAccessException e){
+            throw new RuntimeException("Erreur de connexion a la base de donnees ", e);
 
         }catch (Exception e){
             throw new RuntimeException("Une erreur s'est produite lors de cette opération", e);

@@ -10,6 +10,7 @@ import com.forcenhopital.services.MedecinService;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/medecin")
 public class MedecinController {

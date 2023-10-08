@@ -23,7 +23,8 @@ public class ChambreService {
     private final ServiceMapper serviceMapper;
     private final ServiceRepository serviceRepository;
 
-    public ChambreService(ChambreRepository chambreRepository, ChambreMapper chambreMapper, ServiceMapper serviceMapper, ServiceRepository serviceRepository) {
+    public ChambreService(ChambreRepository chambreRepository, ChambreMapper chambreMapper,
+                          ServiceMapper serviceMapper, ServiceRepository serviceRepository) {
         this.chambreRepository = chambreRepository;
         this.chambreMapper = chambreMapper;
        // this.serviceDto = serviceDto;
